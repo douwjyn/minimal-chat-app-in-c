@@ -1,1 +1,1 @@
-"# minimal-chat-app-in-c" 
+For learning purposes

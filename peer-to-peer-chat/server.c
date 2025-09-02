@@ -64,7 +64,6 @@ int main(void)
     printf("Socket is listening.\n");
 
     // As the socket is in listen mode there is a connection request pending.
-
     struct sockaddr_in client_addr;
     int n_client_addr = sizeof(client_addr);
     SOCKET client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &n_client_addr);
@@ -75,7 +74,6 @@ int main(void)
     printf("Client connected\n");
 
     // store the client's info
-
     struct CLIENT_INFO client_info;
     client_info.client_addr = client_addr;
     client_info.client_socket = client_socket;
@@ -103,6 +101,7 @@ int main(void)
         fgets(buffer, BUFFER_SIZE, stdin);
         send(client_socket, (const char *)&buffer, strlen(buffer), 0);
     }
+
     printf("Exiting...");
     closesocket(server_socket);
     closesocket(client_socket);

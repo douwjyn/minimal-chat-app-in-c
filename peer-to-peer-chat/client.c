@@ -54,8 +54,11 @@ int main(void) {
         int received = recv(c_socket, (char *)&buffer, BUFFER_SIZE, 0);
 
         if (received > 0) {
-            buffer[received] = '\n';
+            buffer[received] = '\0';
             printf("Server: %s\n", buffer);
+        } else {
+            printf("Server shutdown...");
+            break;
         }
     }
 

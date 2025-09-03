@@ -4,6 +4,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 #define BUFFER_SIZE 512
+
 struct CLIENT_INFO
 {
     SOCKET client_socket;
@@ -63,9 +64,15 @@ int main(void)
 
     printf("Socket is listening.\n");
 
-    // As the socket is in listen mode there is a connection request pending.
+    // while the socket is in listening mode there is a connection request pending.
     struct sockaddr_in client_addr;
     int n_client_addr = sizeof(client_addr);
+
+    /* 
+        accept is a blocking function, so the code below will not be 
+        executed until a client connects
+    */
+
     SOCKET client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &n_client_addr);
     if (client_socket == INVALID_SOCKET)
     {
@@ -91,6 +98,7 @@ int main(void)
 
         if (len > 0) {
             buffer[len] = '\0';
+            // inet_ntoa converts the addr to a string so we can output it
             printf("From %s: %s\n", inet_ntoa(client_info.client_addr.sin_addr), buffer);
         } else {
             printf("No message\n");
@@ -99,6 +107,7 @@ int main(void)
         printf("Server: ");
 
         fgets(buffer, BUFFER_SIZE, stdin);
+        // send a message to the client socket
         send(client_socket, (const char *)&buffer, strlen(buffer), 0);
     }
 

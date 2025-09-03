@@ -3,7 +3,8 @@
 #include <stdbool.h>
 
 #pragma comment(lib, "ws2_32.lib")
-#define DEFAULT_ADDR "127.0.0.1"
+
+#define DEFAULT_ADDR "127.0.0.1" // localhost
 #define BUFFER_SIZE 512
 
 int main(void) {
@@ -38,13 +39,14 @@ int main(void) {
     }
     printf("Connected to %s\n", DEFAULT_ADDR);
 
+    // this buffer will store the 'message' being sent and received
     char buffer[BUFFER_SIZE];
 
+    // start the infinite loop
     while (true) {
-        // send(c_socket, message, strlen(message), 0);
         printf("You: ");
         fgets(buffer, BUFFER_SIZE, stdin);
-
+        // send message to the connected socket/address
         int message = send(c_socket, (const char *)&buffer,  BUFFER_SIZE, 0);
 
         // if (message > 0) {
@@ -52,8 +54,10 @@ int main(void) {
         // }
 
         int received = recv(c_socket, (char *)&buffer, BUFFER_SIZE, 0);
-
+        
+        // the recv function returns the length in bytes of the received data if im right
         if (received > 0) {
+            // set a null terminator to the received data to make it a valid string type
             buffer[received] = '\0';
             printf("Server: %s\n", buffer);
         } else {
@@ -62,11 +66,9 @@ int main(void) {
         }
     }
 
-    // char *message = "Hello, world";
-    // send message
     closesocket(c_socket);
-   
     WSACleanup();
-    return 0;
 
+
+    return 0;
 }
